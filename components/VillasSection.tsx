@@ -91,183 +91,105 @@ export default function VillasSection() {
 
     const ctx = gsap.context(() => {
       // ===================================
-      // PREMIUM SECTION HEADER MASTER TIMELINE
-      // ENTER → HOLD → EXIT (Multi-stage cinematic animation)
+      // OPTIMIZED SECTION HEADER ANIMATIONS
+      // Simplified timelines, blur only on entry, GPU-accelerated
       // ===================================
 
-      // 1. "OUR PROPERTIES" badge - Multi-stage timeline
-      const badgeTimeline = gsap.timeline({
+      const isMobile = window.innerWidth < 768;
+
+      // Add GPU compositing hints to header elements
+      gsap.set([".section-chip", ".section-title", ".header-description"], {
+        force3D: true,
+        willChange: "transform, opacity"
+      });
+
+      // Consolidated header timeline - one ScrollTrigger for all elements
+      const headerTimeline = gsap.timeline({
         scrollTrigger: {
           trigger: ".villas-header",
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.5,
+          start: "top 85%",
+          toggleActions: "play none none none",
         }
       });
 
-      badgeTimeline
-        .fromTo(".section-chip",
-          {
-            opacity: 0,
-            x: -60,
-            filter: "blur(8px)"
-          },
-          {
-            opacity: 1,
-            x: 0,
-            filter: "blur(0px)",
-            duration: 0.30,
-            ease: "power3.out"
-          },
-          0 // 0% → 30%
-        )
-        .to(".section-chip", {
+      // 1. Badge - Entry animation only (blur only at entry)
+      headerTimeline.fromTo(".section-chip",
+        {
+          opacity: 0,
+          x: isMobile ? -40 : -60,
+          filter: "blur(8px)"
+        },
+        {
           opacity: 1,
           x: 0,
           filter: "blur(0px)",
-          duration: 0.40,
-          ease: "none"
-        }, 0.30) // 30% → 70% STABLE
-        .to(".section-chip", {
+          duration: 1.2,
+          ease: "power4.out",
+          onComplete: () => {
+            gsap.set(".section-chip", { willChange: "auto" });
+          }
+        },
+        0
+      );
+
+      // 2. Heading - Entry animation only (no scale/blur during scrub)
+      headerTimeline.fromTo(".section-title",
+        {
           opacity: 0,
-          x: -40,
-          filter: "blur(4px)",
-          duration: 0.30,
-          ease: "power2.in"
-        }, 0.70); // 70% → 100% EXIT
-
-      // 2. "Our villas." heading - Multi-stage with scale + blur
-      const headingTimeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: ".villas-header",
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.5,
-        }
-      });
-
-      headingTimeline
-        .fromTo(".section-title",
-          {
-            opacity: 0,
-            y: 80,
-            scale: 0.95,
-            filter: "blur(12px)"
-          },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            filter: "blur(0px)",
-            duration: 0.35,
-            ease: "power4.out"
-          },
-          0 // 0% → 35%
-        )
-        .to(".section-title", {
+          y: isMobile ? 40 : 80,
+          filter: "blur(12px)"
+        },
+        {
           opacity: 1,
           y: 0,
-          scale: 1,
           filter: "blur(0px)",
-          duration: 0.35,
-          ease: "none"
-        }, 0.35) // 35% → 70% STABLE
-        .to(".section-title", {
+          duration: 1.4,
+          ease: "power4.out",
+          onComplete: () => {
+            gsap.set(".section-title", { willChange: "auto" });
+          }
+        },
+        0.15
+      );
+
+      // 3. Description - Entry animation only
+      headerTimeline.fromTo(".header-description",
+        {
           opacity: 0,
-          y: -40,
-          scale: 0.98,
-          filter: "blur(6px)",
-          duration: 0.30,
-          ease: "power2.in"
-        }, 0.70); // 70% → 100% EXIT
-
-      // 3. Description text - Multi-stage from right
-      const descTimeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: ".villas-header",
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.5,
-        }
-      });
-
-      descTimeline
-        .fromTo(".header-description",
-          {
-            opacity: 0,
-            x: 80,
-            filter: "blur(8px)"
-          },
-          {
-            opacity: 1,
-            x: 0,
-            filter: "blur(0px)",
-            duration: 0.35,
-            ease: "power3.out"
-          },
-          0 // 0% → 35%
-        )
-        .to(".header-description", {
+          x: isMobile ? 40 : 80,
+          filter: "blur(8px)"
+        },
+        {
           opacity: 1,
           x: 0,
           filter: "blur(0px)",
-          duration: 0.35,
-          ease: "none"
-        }, 0.35) // 35% → 70% STABLE
-        .to(".header-description", {
-          opacity: 0,
-          x: 40,
-          filter: "blur(4px)",
-          duration: 0.30,
-          ease: "power2.in"
-        }, 0.70); // 70% → 100% EXIT
-
-      // 4. Divider line - Width reveal animation
-      const dividerTimeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: ".villas-header",
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.5,
-        }
-      });
-
-      dividerTimeline
-        .fromTo(".villas-header",
-          {
-            borderBottomColor: "rgba(0, 0, 0, 0)",
-            "--divider-scale": 0,
-          },
-          {
-            borderBottomColor: "rgba(0, 0, 0, 0.08)",
-            "--divider-scale": 1,
-            duration: 0.40,
-            ease: "power3.out"
-          },
-          0.05 // 5% → 40%
-        )
-        .to(".villas-header", {
-          borderBottomColor: "rgba(0, 0, 0, 0.08)",
-          duration: 0.30,
-          ease: "none"
-        }, 0.40) // 40% → 70% STABLE
-        .to(".villas-header", {
-          borderBottomColor: "rgba(0, 0, 0, 0)",
-          duration: 0.30,
-          ease: "power2.in"
-        }, 0.70); // 70% → 100% EXIT
+          duration: 1.2,
+          ease: "power4.out",
+          onComplete: () => {
+            gsap.set(".header-description", { willChange: "auto" });
+          }
+        },
+        0.25
+      );
 
       // Clean premium reveal animation for villa cards
-      // Simple elegant entrance/exit - NO constant motion
+      // GPU-optimized with responsive motion values
       gsap.utils.toArray(".villa-item").forEach((item: any, index: number) => {
         const isEven = index % 2 === 1;
         
-        // Clean reveal: slide in from left/right with blur
+        // Add GPU compositing hint
+        gsap.set(item, { force3D: true, willChange: "transform, opacity" });
+        
+        // Responsive motion values
+        const slideDistance = isMobile ? (isEven ? 60 : -60) : (isEven ? 120 : -120);
+        const rotateAmount = isMobile ? (isEven ? 4 : -4) : (isEven ? 8 : -8);
+        
+        // Clean reveal: slide in from left/right with blur (entry only)
         gsap.fromTo(item,
           { 
             opacity: 0,
-            x: isEven ? 120 : -120,
-            rotateY: isEven ? 8 : -8,
+            x: slideDistance,
+            rotateY: rotateAmount,
             filter: "blur(8px)"
           },
           {
@@ -282,14 +204,18 @@ export default function VillasSection() {
               start: "top 85%",
               toggleActions: "play none none none",
             },
+            onComplete: () => {
+              gsap.set(item, { willChange: "auto" });
+            }
           }
         );
 
-        // Premium subtle parallax for villa images
+        // Optimized subtle parallax for villa images
         const villaImage = item.querySelector('.villa-image');
         if (villaImage) {
+          gsap.set(villaImage, { force3D: true });
           gsap.to(villaImage, {
-            yPercent: -8,
+            y: isMobile ? "-5%" : "-8%",  // Smaller movement on mobile
             ease: "none",
             scrollTrigger: {
               trigger: item,

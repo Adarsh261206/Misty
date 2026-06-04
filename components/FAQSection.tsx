@@ -41,12 +41,20 @@ export default function FAQSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Badge animation
+      const isMobile = window.innerWidth < 768;
+      
+      // Add GPU compositing hints to header elements
+      gsap.set([".faq-badge", ".faq-heading", ".faq-description"], { 
+        force3D: true, 
+        willChange: "transform, opacity" 
+      });
+
+      // Badge animation - responsive motion
       gsap.fromTo(
         ".faq-badge",
         {
           opacity: 0,
-          x: -60,
+          x: isMobile ? -40 : -60,
           filter: "blur(8px)",
         },
         {
@@ -60,15 +68,18 @@ export default function FAQSection() {
             start: "top 85%",
             toggleActions: "play none none none",
           },
+          onComplete: () => {
+            gsap.set(".faq-badge", { willChange: "auto" });
+          }
         }
       );
 
-      // Heading animation
+      // Heading animation - responsive motion
       gsap.fromTo(
         ".faq-heading",
         {
           opacity: 0,
-          y: 80,
+          y: isMobile ? 40 : 80,
           filter: "blur(12px)",
           scale: 0.95,
         },
@@ -84,15 +95,18 @@ export default function FAQSection() {
             start: "top 85%",
             toggleActions: "play none none none",
           },
+          onComplete: () => {
+            gsap.set(".faq-heading", { willChange: "auto" });
+          }
         }
       );
 
-      // Description animation
+      // Description animation - responsive motion
       gsap.fromTo(
         ".faq-description",
         {
           opacity: 0,
-          y: 40,
+          y: isMobile ? 20 : 40,
           filter: "blur(8px)",
         },
         {
@@ -107,12 +121,18 @@ export default function FAQSection() {
             toggleActions: "play none none none",
           },
           delay: 0.2,
+          onComplete: () => {
+            gsap.set(".faq-description", { willChange: "auto" });
+          }
         }
       );
 
-      // FAQ items alternating animation
-      gsap.utils.toArray(".faq-item").forEach((item: any, index: number) => {
-        const direction = index % 2 === 0 ? -120 : 120;
+      // FAQ items alternating animation with GPU optimization
+      const faqItems = gsap.utils.toArray(".faq-item");
+      gsap.set(faqItems, { force3D: true, willChange: "transform, opacity" });
+      
+      faqItems.forEach((item: any, index: number) => {
+        const direction = index % 2 === 0 ? (isMobile ? -60 : -120) : (isMobile ? 60 : 120);
 
         gsap.fromTo(
           item,
@@ -132,6 +152,9 @@ export default function FAQSection() {
               start: "top 90%",
               toggleActions: "play none none none",
             },
+            onComplete: () => {
+              gsap.set(item, { willChange: "auto" });
+            }
           }
         );
       });

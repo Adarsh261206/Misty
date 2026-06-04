@@ -22,8 +22,11 @@ export default function Hero() {
         }
       });
 
-      // 1. Hero Image Reveal - Cinematic opening
+      // 1. Hero Image Reveal - Cinematic opening with GPU optimization
       if (imageRef.current) {
+        // Add GPU compositing hint
+        gsap.set(imageRef.current, { force3D: true, willChange: "transform" });
+        
         masterTl.fromTo(imageRef.current, {
           scale: 1.12,
           opacity: 0.7,
@@ -33,9 +36,10 @@ export default function Hero() {
           duration: 2.5,
           ease: "power2.out",
           onComplete: () => {
-            // Subtle Ken Burns effect after reveal
+            // Optimized Ken Burns - GPU-accelerated, smaller range for mobile
+            const isMobile = window.innerWidth < 768;
             gsap.to(imageRef.current, {
-              scale: 1.08,
+              scale: isMobile ? 1.03 : 1.08,
               duration: 25,
               ease: "none",
               repeat: -1,
@@ -74,8 +78,11 @@ export default function Hero() {
         ease: "power3.out",
       }, 1.4);
 
-      // 3. Luxury Badge Reveal - Elegant appearance
+      // 3. Luxury Badge Reveal - Elegant appearance with GPU optimization
       if (badgeRef.current) {
+        // Add GPU compositing hint
+        gsap.set(badgeRef.current, { force3D: true, willChange: "transform" });
+        
         masterTl.fromTo(
           badgeRef.current,
           {
@@ -90,9 +97,10 @@ export default function Hero() {
             duration: 1.2,
             ease: "expo.out",
             onComplete: () => {
-              // Floating effect after reveal
+              // Optimized floating effect - smaller movement on mobile
+              const isMobile = window.innerWidth < 768;
               gsap.to(badgeRef.current, {
-                y: -5,
+                y: isMobile ? -3 : -5,
                 duration: 3,
                 ease: "sine.inOut",
                 repeat: -1,
@@ -104,15 +112,21 @@ export default function Hero() {
         );
       }
 
-      // 4. Hero Heading Reveal - Dramatic entrance
+      // 4. Hero Heading Reveal - Dramatic entrance with GPU optimization
       if (headlineRef.current) {
         const headlineSpans = headlineRef.current.querySelectorAll("span");
+        
+        // Add GPU compositing hints
+        gsap.set(headlineSpans, { force3D: true, willChange: "transform, opacity" });
+        
+        // Responsive motion values
+        const isMobile = window.innerWidth < 768;
         
         masterTl.fromTo(
           headlineSpans,
           {
             opacity: 0,
-            y: 80,
+            y: isMobile ? 40 : 80,
             filter: "blur(10px)",
           },
           {
@@ -122,21 +136,31 @@ export default function Hero() {
             duration: 1.6,
             ease: "power4.out",
             stagger: 0.2,
+            onComplete: () => {
+              // Clear will-change after animation
+              gsap.set(headlineSpans, { willChange: "auto" });
+            }
           },
           2.2
         );
       }
 
-      // 5. Stats Cards Reveal - Premium 3D entrance
+      // 5. Stats Cards Reveal - Premium 3D entrance with GPU optimization
       if (cardsRef.current) {
         const cards = cardsRef.current.querySelectorAll(".stat-card");
+        
+        // Add GPU compositing hints
+        gsap.set(cards, { force3D: true, willChange: "transform, opacity" });
+        
+        // Responsive motion values
+        const isMobile = window.innerWidth < 768;
         
         masterTl.fromTo(
           cards,
           {
             opacity: 0,
-            x: 120,
-            rotateY: 15,
+            x: isMobile ? 60 : 120,
+            rotateY: isMobile ? 8 : 15,
           },
           {
             opacity: 1,
@@ -145,19 +169,23 @@ export default function Hero() {
             duration: 1.4,
             ease: "power4.out",
             stagger: 0.25,
+            onComplete: () => {
+              // Clear will-change after animation
+              gsap.set(cards, { willChange: "auto" });
+            }
           },
           3.2
         );
       }
 
-      // PREMIUM PARALLAX EFFECT - Subtle depth with scrub
-      // Creates luxurious depth by moving layers at different speeds
+      // PREMIUM PARALLAX EFFECT - Optimized for mobile performance
+      // Uses translate3d instead of scale during scrub (GPU-accelerated)
       
-      // Background parallax - moves upward 8% + zooms in for depth
       if (imageRef.current) {
+        const isMobile = window.innerWidth < 768;
+        
         gsap.to(imageRef.current, {
-          yPercent: -8,
-          scale: 1.15,
+          y: isMobile ? "-5%" : "-8%",  // Smaller movement on mobile
           ease: "none",
           scrollTrigger: {
             trigger: containerRef.current,
@@ -168,10 +196,13 @@ export default function Hero() {
         });
       }
 
-      // PREMIUM SCROLL-DRIVEN FADE APART ANIMATION
-      // Creates cinematic separation effect as content scrolls away
+      // OPTIMIZED SCROLL-DRIVEN FADE APART ANIMATION
+      // Removed continuous blur during scrub for mobile performance
+      // Uses translate3d for GPU acceleration
       
-      // Badge animation - moves LEFT with delayed fade (stays visible longer)
+      const isMobile = window.innerWidth < 768;
+      
+      // Badge animation - moves LEFT with delayed fade (blur only at entry)
       if (badgeRef.current) {
         const badgeTl = gsap.timeline({
           scrollTrigger: {
@@ -182,31 +213,25 @@ export default function Hero() {
           },
         });
 
-        // Badge stays fully visible for first 20% of scroll
         badgeTl.to(badgeRef.current, {
-          x: -20, // moves but stays visible
+          x: isMobile ? -10 : -20,
           opacity: 1,
-          filter: "blur(0px)",
           duration: 0.2,
           ease: "none",
         })
-        // Then fades out in the remaining 80%
         .to(badgeRef.current, {
-          x: -100,
+          x: isMobile ? -60 : -100,
           opacity: 0,
-          filter: "blur(6px)",
           duration: 0.8,
           ease: "none",
         });
       }
 
-      // Heading animation - moves LEFT with fade and scale
+      // Heading animation - moves LEFT with fade (no scale/blur during scrub)
       if (headlineRef.current) {
         gsap.to(headlineRef.current, {
-          x: -200,
+          x: isMobile ? -100 : -200,
           opacity: 0,
-          scale: 0.92,
-          filter: "blur(8px)",
           ease: "none",
           scrollTrigger: {
             trigger: containerRef.current,
@@ -217,13 +242,11 @@ export default function Hero() {
         });
       }
 
-      // Stats cards animation - moves RIGHT with fade and scale
+      // Stats cards animation - moves RIGHT with fade (no scale/blur during scrub)
       if (cardsRef.current) {
         gsap.to(cardsRef.current, {
-          x: 200,
+          x: isMobile ? 100 : 200,
           opacity: 0,
-          scale: 0.95,
-          filter: "blur(8px)",
           ease: "none",
           scrollTrigger: {
             trigger: containerRef.current,

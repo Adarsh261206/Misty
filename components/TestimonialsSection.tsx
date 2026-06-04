@@ -42,11 +42,16 @@ export default function TestimonialsSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Banner reveal
+      const isMobile = window.innerWidth < 768;
+      
+      // Add GPU compositing hints
+      gsap.set(".testimonials-banner", { force3D: true, willChange: "transform" });
+
+      // Banner reveal - responsive motion values
       gsap.fromTo(
         ".testimonials-banner",
         {
-          y: 40,
+          y: isMobile ? 20 : 40,
           filter: "blur(8px)",
         },
         {
@@ -59,6 +64,9 @@ export default function TestimonialsSection() {
             start: "top 85%",
             toggleActions: "play none none none",
           },
+          onComplete: () => {
+            gsap.set(".testimonials-banner", { willChange: "auto" });
+          }
         }
       );
 
@@ -80,16 +88,21 @@ export default function TestimonialsSection() {
         }
       );
 
-      // Card reveals
-      gsap.utils.toArray(".testimonial-card").forEach((card: any, index: number) => {
+      // Card reveals - consolidated with GPU optimization
+      const cards = gsap.utils.toArray(".testimonial-card");
+      
+      // Add GPU hints to all cards
+      gsap.set(cards, { force3D: true, willChange: "transform, opacity" });
+      
+      cards.forEach((card: any, index: number) => {
         let initialState;
 
         if (index === 0) {
-          initialState = { x: -120, filter: "blur(8px)" };
+          initialState = { x: isMobile ? -60 : -120, filter: "blur(8px)" };
         } else if (index === 1) {
-          initialState = { y: 80, filter: "blur(8px)" };
+          initialState = { y: isMobile ? 40 : 80, filter: "blur(8px)" };
         } else {
-          initialState = { x: 120, filter: "blur(8px)" };
+          initialState = { x: isMobile ? 60 : 120, filter: "blur(8px)" };
         }
 
         gsap.fromTo(
@@ -107,11 +120,16 @@ export default function TestimonialsSection() {
               toggleActions: "play none none none",
             },
             delay: index * 0.15,
+            onComplete: () => {
+              gsap.set(card, { willChange: "auto" });
+            }
           }
         );
 
-        // Star rating stagger
+        // Star rating stagger with GPU optimization
         const stars = card.querySelectorAll(".star-icon");
+        gsap.set(stars, { force3D: true });
+        
         gsap.fromTo(
           stars,
           { scale: 0.5 },
