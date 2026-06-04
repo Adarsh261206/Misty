@@ -280,7 +280,7 @@ export default function VillasSection() {
             scrollTrigger: {
               trigger: item,
               start: "top 85%",
-              toggleActions: "play none none reverse",
+              toggleActions: "play none none none",
             },
           }
         );
@@ -313,14 +313,11 @@ export default function VillasSection() {
             scrollTrigger: {
               trigger: item,
               start: "top 85%",
-              toggleActions: "play none none reverse",
+              toggleActions: "play none none none",
             },
             onUpdate: () => {
               const currentVal = Math.floor(numberObj.value);
               villaNumber.textContent = String(currentVal).padStart(2, '0');
-            },
-            onReverseComplete: () => {
-              villaNumber.textContent = '00';
             }
           });
         }
