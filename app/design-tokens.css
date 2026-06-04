@@ -1,0 +1,117 @@
+/* =========================================
+   MISTY CASCADES DESIGN SYSTEM
+   Luxury Villa Brand Guidelines
+   ========================================= */
+
+:root {
+  /* ==================== GRID SYSTEM ==================== */
+  --grid-width: 1920px;
+  --grid-margin: 80px;
+  --grid-content: 1760px; /* 1920 - 160 */
+  
+  /* ==================== COLOR SYSTEM ==================== */
+  --color-black: #201F22;
+  --color-matte-grey: #707070;
+  --color-silver: #858585;
+  --color-white: #FFFFFF;
+  
+  /* Semantic Colors */
+  --color-primary: var(--color-black);
+  --color-secondary: var(--color-matte-grey);
+  --color-text: var(--color-black);
+  --color-text-muted: var(--color-silver);
+  --color-background: var(--color-white);
+  
+  /* ==================== TYPOGRAPHY SCALE ==================== */
+  --font-family-primary: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  
+  /* Font Sizes */
+  --font-size-h1: 119px;
+  --font-size-h2: 64px;
+  --font-size-body-1: 30px;
+  --font-size-body-2: 22px;
+  --font-size-body-3: 18px;
+  --font-size-button: 16px;
+  
+  /* Line Heights */
+  --line-height-h1: 1.1;
+  --line-height-h2: 1.2;
+  --line-height-body: 1.6;
+  
+  /* Font Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  
+  /* Letter Spacing */
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.02em;
+  
+  /* ==================== SPACING SYSTEM ==================== */
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 80px;
+  --space-4xl: 120px;
+  
+  /* ==================== COMPONENT SIZES ==================== */
+  --nav-height: 40px;
+  --nav-pill-radius: 999px;
+  --card-radius: 24px;
+  
+  /* ==================== TRANSITIONS ==================== */
+  --transition-fast: 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-base: 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 500ms cubic-bezier(0.16, 1, 0.3, 1);
+  
+  /* ==================== SHADOWS ==================== */
+  --shadow-sm: 0 2px 8px rgba(32, 31, 34, 0.04);
+  --shadow-md: 0 4px 16px rgba(32, 31, 34, 0.08);
+  --shadow-lg: 0 8px 32px rgba(32, 31, 34, 0.12);
+  
+  /* ==================== Z-INDEX SCALE ==================== */
+  --z-base: 1;
+  --z-elevated: 10;
+  --z-navigation: 100;
+  --z-modal: 1000;
+}
+
+/* ==================== RESPONSIVE BREAKPOINTS ==================== */
+@media (max-width: 1920px) {
+  :root {
+    --grid-margin: 60px;
+  }
+}
+
+@media (max-width: 1440px) {
+  :root {
+    --grid-margin: 40px;
+    --font-size-h1: 96px;
+    --font-size-h2: 52px;
+  }
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --grid-margin: 32px;
+    --font-size-h1: 72px;
+    --font-size-h2: 42px;
+    --font-size-body-1: 24px;
+    --font-size-body-2: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --grid-margin: 24px;
+    --font-size-h1: 48px;
+    --font-size-h2: 32px;
+    --font-size-body-1: 20px;
+    --font-size-body-2: 16px;
+    --font-size-body-3: 15px;
+  }
+}
