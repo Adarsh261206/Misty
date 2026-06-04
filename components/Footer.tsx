@@ -315,6 +315,7 @@ export default function Footer() {
             color: #FFFFFF;
             margin-bottom: 8px;
             letter-spacing: 0.02em;
+            word-break: break-word;
           }
 
           .footer-brand-story {
@@ -425,8 +426,25 @@ export default function Footer() {
 
             .footer-grid {
               grid-template-columns: 1fr 1fr;
-              gap: 40px 32px;
+              gap: 40px 24px;
               padding-bottom: 60px;
+            }
+
+            .footer-logo {
+              font-size: 24px;
+            }
+
+            .footer-brand-story {
+              font-size: 13px;
+              max-width: 100%;
+            }
+
+            .footer-column-title {
+              font-size: 11px;
+            }
+
+            .footer-link {
+              font-size: 14px;
             }
 
             .footer-bottom {
