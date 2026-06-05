@@ -271,17 +271,23 @@ export default function Hero() {
       ref={containerRef}
       className="relative w-full h-screen overflow-hidden"
     >
-      {/* BACKGROUND IMAGE - FULL VISIBLE */}
+      {/* BACKGROUND VIDEO - FULL VISIBLE */}
       <div 
         ref={imageRef}
         className="absolute inset-0 w-full h-full"
-        style={{
-          backgroundImage: "url('/hero2.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center center",
-          filter: "brightness(0.82) contrast(1.18) saturate(0.88)",
-        }}
       >
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{
+            filter: "brightness(0.82) contrast(1.18) saturate(0.88)",
+          }}
+        >
+          <source src="/videohero.mp4" type="video/mp4" />
+        </video>
         {/* Subtle atmospheric haze */}
         <div 
           className="absolute inset-0"
